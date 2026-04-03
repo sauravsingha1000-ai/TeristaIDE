@@ -7,18 +7,29 @@ plugins {
 
 android {
     namespace = "${BuildConfig.packageName}.editor"
+
+    compileSdk = 35
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 kapt {
     arguments {
-        arg ("eventBusIndex", "${BuildConfig.packageName}.events.EditorEventsIndex")
+        arg("eventBusIndex", "${BuildConfig.packageName}.events.EditorEventsIndex")
     }
 }
 
 dependencies {
     ksp(projects.annotationProcessorsKsp)
     kapt(projects.annotationProcessors)
-    
+
     api(libs.androidide.ts)
     api(libs.androidide.ts.java)
     api(libs.androidide.ts.json)
@@ -27,7 +38,7 @@ dependencies {
     api(libs.androidide.ts.xml)
     api(libs.androidx.collection)
     api(libs.common.editor)
-    
+
     api(projects.editorApi)
     api(projects.editorTreesitter)
 
@@ -38,9 +49,9 @@ dependencies {
     implementation(libs.androidx.tracing.ktx)
 
     implementation(libs.common.utilcode)
-    
+
     implementation(libs.google.material)
-    
+
     implementation(projects.actions)
     implementation(projects.annotations)
     implementation(projects.common)
@@ -49,11 +60,11 @@ dependencies {
     implementation(projects.lexers)
     implementation(projects.shared)
     implementation(projects.resources)
-    
+
     implementation(projects.lsp.api)
     implementation(projects.lsp.java)
     implementation(projects.lsp.xml)
-    
+
     testImplementation(libs.tests.junit)
     testImplementation(libs.tests.google.truth)
     testImplementation(libs.tests.robolectric)
