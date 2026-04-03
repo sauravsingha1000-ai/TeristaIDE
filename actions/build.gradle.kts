@@ -1,4 +1,4 @@
-plugins{
+plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
@@ -6,6 +6,17 @@ plugins{
 
 android {
     namespace = "${BuildConfig.packageName}.actions"
+
+    compileSdk = 35
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
@@ -21,7 +32,7 @@ dependencies {
     implementation(libs.common.kotlin.coroutines.android)
     implementation(libs.common.utilcode)
     implementation(libs.google.auto.service.annotations)
-    
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.google.material)
 }
