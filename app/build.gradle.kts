@@ -16,11 +16,27 @@ apply {
 
 android {
   namespace = BuildConfig.packageName
+  compileSdk = 35
 
   defaultConfig {
     applicationId = BuildConfig.packageName
+    minSdk = 21
+    targetSdk = 35
     vectorDrawables.useSupportLibrary = true
   }
+
+  buildFeatures {
+  buildConfig = true
+ }
+
+  compileOptions {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlinOptions {
+  jvmTarget = "17"
+}
 
   androidResources {
     generateLocaleConfig = true
