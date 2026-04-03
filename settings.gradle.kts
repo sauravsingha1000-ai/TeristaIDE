@@ -48,7 +48,7 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "AndroidIDE"
+rootProject.name = "TeristaIDE"
 
 include(
   ":annotation-processors",
