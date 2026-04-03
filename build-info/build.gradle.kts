@@ -24,9 +24,20 @@ plugins {
 
 description = "Information about the AndroidIDE build"
 
-val buildInfoGenDir: Provider<Directory> = project.layout.buildDirectory.dir("generated/buildInfo").also { it.get().asFile.createDirectory() }
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+}
 
-sourceSets { getByName("main").java.srcDir(buildInfoGenDir) }
+val buildInfoGenDir: Provider<Directory> =
+  project.layout.buildDirectory.dir("generated/buildInfo").also {
+    it.get().asFile.createDirectory()
+  }
+
+sourceSets {
+  getByName("main").java.srcDir(buildInfoGenDir)
+}
 
 tasks.create("generateBuildInfo") {
   val buildInfoPath = "com/itsaky/androidide/buildinfo/BuildInfo.java"
@@ -70,5 +81,10 @@ tasks.create("generateBuildInfo") {
   }
 }
 
-tasks.withType<JavaCompile> { dependsOn("generateBuildInfo") }
-tasks.withType<Jar> { dependsOn("generateBuildInfo") }
+tasks.withType<JavaCompile> {
+  dependsOn("generateBuildInfo")
+}
+
+tasks.withType<Jar> {
+  dependsOn("generateBuildInfo")
+}
