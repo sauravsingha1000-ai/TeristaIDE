@@ -22,10 +22,24 @@ plugins {
 android {
   namespace = "${BuildConfig.packageName}.logsender.sample"
 
+  compileSdk = 35
+
   defaultConfig {
+    minSdk = 21
+    targetSdk = 35
+
     vectorDrawables {
       useSupportLibrary = true
     }
+  }
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+
+  kotlinOptions {
+    jvmTarget = "17"
   }
 }
 
