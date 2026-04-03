@@ -22,13 +22,24 @@ plugins {
 
 android {
   namespace = "${BuildConfig.packageName}.editor.api"
+
+  compileSdk = 35
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+
+  kotlinOptions {
+    jvmTarget = "17"
+  }
 }
 
 dependencies {
   api(libs.androidide.ts)
   api(projects.lsp.api)
   api(projects.lsp.models)
-  
+
   implementation(projects.common)
   implementation(projects.logger)
 }
