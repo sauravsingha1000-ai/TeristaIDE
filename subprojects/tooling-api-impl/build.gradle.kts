@@ -5,14 +5,6 @@
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
- *
- *  AndroidIDE is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *   along with AndroidIDE.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 @Suppress("JavaPluginLanguageLevel")
@@ -22,14 +14,20 @@ plugins {
   id("org.jetbrains.kotlin.jvm")
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+}
+
 tasks.withType<Jar> {
-  manifest { attributes("Main-Class" to "${BuildConfig.packageName}.tooling.impl.Main") }
+  manifest {
+    attributes("Main-Class" to "${BuildConfig.packageName}.tooling.impl.Main")
+  }
 }
 
 tasks.register("deleteExistingJarFiles") {
-  delete {
-    delete(project.layout.buildDirectory.dir("libs"))
-  }
+  delete(project.layout.buildDirectory.dir("libs"))
 }
 
 tasks.register("copyJar") {
@@ -45,12 +43,12 @@ tasks.register("copyJar") {
   }
 }
 
-project.tasks.getByName("jar") {
+tasks.named("jar") {
   dependsOn("deleteExistingJarFiles")
   finalizedBy("shadowJar")
 }
 
-project.tasks.getByName("shadowJar") {
+tasks.named("shadowJar") {
   finalizedBy("copyJar")
 }
 
