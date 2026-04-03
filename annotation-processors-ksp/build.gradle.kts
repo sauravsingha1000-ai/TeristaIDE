@@ -10,11 +10,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
  *
  *  AndroidIDE is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *   along with AndroidIDE.  If not, see <https://www.gnu.org/licenses/>.
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
 plugins {
@@ -23,20 +19,31 @@ plugins {
 
 group = "${BuildConfig.packageName}.annotations"
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+}
+
 dependencies {
   implementation(kotlin("stdlib"))
-  
+
   implementation(projects.annotations)
-  
+
   implementation(libs.androidx.annotation)
   implementation(libs.common.javapoet)
   implementation(libs.common.ksp)
 }
 
-sourceSets.main {
-  java.srcDirs("src/main/kotlin")
+sourceSets {
+  main {
+    java.srcDirs("src/main/kotlin")
+  }
 }
 
-tasks.withType<KotlinCompile> {
-  kotlinOptions.jvmTarget = "17"
+tasks.withType<KotlinCompile>().configureEach {
+  kotlinOptions {
+    jvmTarget = "17"
+    freeCompilerArgs += listOf("-Xjvm-default=all")
+  }
 }
