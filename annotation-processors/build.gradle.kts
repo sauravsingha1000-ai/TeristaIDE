@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   kotlin("jvm")
+  kotlin("kapt") // REQUIRED
 }
 
 group = "${BuildConfig.packageName}.annotations"
@@ -35,12 +36,15 @@ dependencies {
   implementation("de.greenrobot:java-common:2.3.1")
 
   implementation(libs.google.auto.service.annotations)
-  annotationProcessor(libs.google.auto.service)
 
-  // Generates the required META-INF descriptor to make the processor incremental.
+  // FIX: annotationProcessor → kapt
+  kapt(libs.google.auto.service)
+
   val incap = "1.0.0"
   compileOnly("net.ltgt.gradle.incap:incap:$incap")
-  annotationProcessor("net.ltgt.gradle.incap:incap-processor:$incap")
+
+  // FIX: annotationProcessor → kapt
+  kapt("net.ltgt.gradle.incap:incap-processor:$incap")
 }
 
 tasks.withType<KotlinCompile> {
