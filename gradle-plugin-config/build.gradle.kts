@@ -22,3 +22,9 @@ plugins {
 }
 
 description = "Configuration options for the Tooling API and Gradle Plugin."
+
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+}
