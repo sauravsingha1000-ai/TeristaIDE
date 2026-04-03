@@ -23,9 +23,15 @@ plugins {
 
 description = "AndroidIDE Logging Framework"
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 dependencies {
     compileOnly(projects.subprojects.frameworkStubs)
-    
+
     testImplementation(libs.tests.junit)
     testImplementation(libs.tests.google.truth)
 }
