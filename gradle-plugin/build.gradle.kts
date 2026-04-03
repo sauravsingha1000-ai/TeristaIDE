@@ -23,6 +23,12 @@ plugins {
 
 description = "Gradle Plugin for projects that are built with AndroidIDE"
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+}
+
 tasks.named<Test>("test") {
   useJUnitPlatform()
 }
