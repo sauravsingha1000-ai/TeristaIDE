@@ -2,7 +2,7 @@ buildscript {
     ext {
         build_gradle_version = "@@TOOLING_API_TEST_AGP_VERSION@@"
     }
-    
+
     project.ext {
         compileSdk = 31
         buildTools = "31.0.0"
@@ -12,23 +12,24 @@ buildscript {
         versionCode = 100
         versionName = "1.0.0"
     }
-    
+
     repositories {
-        google ()
-        mavenCentral ()
+        google()
+        mavenCentral()
     }
+
     dependencies {
         classpath "com.android.tools.build:gradle:$build_gradle_version"
     }
-    
 }
+
 allprojects {
     repositories {
-        mavenCentral ()
-        google ()
+        google()
+        mavenCentral()
     }
 }
 
-task clean (type: Delete) {
+task clean(type: Delete) {
     delete rootProject.buildDir
 }
