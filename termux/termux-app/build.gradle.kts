@@ -11,22 +11,32 @@ apply {
     plugin(TerminalBootstrapPackagesPlugin::class.java)
 }
 
-val packageVariant = System.getenv("TERMUX_PACKAGE_VARIANT") ?: "apt-android-7" // Default: "apt-android-7"
+val packageVariant = System.getenv("TERMUX_PACKAGE_VARIANT") ?: "apt-android-7"
 
 android {
     namespace = "com.termux"
     ndkVersion = BuildConfig.ndkVersion
 
+    compileSdk = 35
+
     defaultConfig {
 
-        buildConfigField("String", "TERMUX_PACKAGE_VARIANT", "\"" + packageVariant + "\"") // Used by TermuxApplication class
+        buildConfigField("String", "TERMUX_PACKAGE_VARIANT", "\"" + packageVariant + "\"")
 
         manifestPlaceholders["TERMUX_PACKAGE_NAME"] = BuildConfig.packageName
         manifestPlaceholders["TERMUX_APP_NAME"] = "AndroidIDE"
 
         externalNativeBuild {
             ndkBuild {
-                cFlags("-std=c11", "-Wall", "-Wextra", "-Werror", "-Os", "-fno-stack-protector", "-Wl,--gc-sections")
+                cFlags(
+                    "-std=c11",
+                    "-Wall",
+                    "-Wextra",
+                    "-Werror",
+                    "-Os",
+                    "-fno-stack-protector",
+                    "-Wl,--gc-sections"
+                )
             }
         }
     }
@@ -46,6 +56,15 @@ android {
     }
 
     packaging.jniLibs.useLegacyPackaging = true
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
