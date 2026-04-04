@@ -6,26 +6,26 @@ android {
     namespace = "com.itsaky.test.another.android.library"
     compileSdkVersion rootProject.ext.compileSdk
     buildToolsVersion rootProject.ext.buildTools
-    
+
     defaultConfig {
         minSdkVersion rootProject.ext.minSdk
         targetSdkVersion rootProject.ext.targetSdk
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
     }
-    
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile ('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    
+
     lintOptions {
         abortOnError false
     }
@@ -33,9 +33,9 @@ android {
 
 dependencies {
     implementation 'io.github.itsaky:nb-javac-android:17.0.0.0'
-    implementation project (path: ':other-java-library')
+    implementation project(path: ':other-java-library')
 }
 
 repositories {
-    mavenCentral ()
+    mavenCentral()
 }
