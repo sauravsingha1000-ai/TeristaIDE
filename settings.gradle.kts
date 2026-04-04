@@ -97,7 +97,7 @@ include(
   ":subprojects:javac",
   ":subprojects:javac-services",
   ":subprojects:javapoet",
-  ":subprojects:jaxp",
+// ":subprojects:jaxp",
   ":subprojects:jdk-compiler",
   ":subprojects:jdk-jdeps",
   ":subprojects:jdt",
