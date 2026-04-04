@@ -9,9 +9,17 @@ pluginManagement {
     google()
     mavenCentral()
   }
-plugins {
-    id("com.mooltiverse.oss.nyx") version "2.5.1"
 }
+
+// ✅ ADD THIS BLOCK (FIX)
+buildscript {
+  repositories {
+    mavenCentral()
+    maven { url = uri("https://plugins.gradle.org/m2/") }
+  }
+  dependencies {
+    classpath("com.mooltiverse.oss.nyx:gradle:2.5.1")
+  }
 }
 
 FDroidConfig.load(rootDir)
