@@ -11,15 +11,6 @@ pluginManagement {
   }
 }
 
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath("com.mooltiverse.oss.nyx:gradle:2.5.1")
-  }
-}
-
 FDroidConfig.load(rootDir)
 
 if (FDroidConfig.hasRead && FDroidConfig.isFDroidBuild) {
@@ -153,6 +144,6 @@ object FDroidConfig {
     isFDroidBuild = properties.getProperty(PROP_FDROID_BUILD, null).toBoolean()
 
     fDroidVersionName = properties.getProperty(PROP_FDROID_BUILD_VERSION, null)
-    fDroidVersionCode =  properties.getProperty(PROP_FDROID_BUILD_VERCODE, null)?.toInt()
+    fDroidVersionCode = properties.getProperty(PROP_FDROID_BUILD_VERCODE, null)?.toInt()
   }
 }
