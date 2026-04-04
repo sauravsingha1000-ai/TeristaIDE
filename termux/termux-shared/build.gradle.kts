@@ -1,5 +1,5 @@
 plugins {
-    id ("com.android.library")
+    id("com.android.library")
     id("kotlin-android")
 }
 
@@ -7,10 +7,21 @@ android {
     namespace = "com.termux.shared"
     ndkVersion = BuildConfig.ndkVersion
 
+    compileSdk = 35
+
     externalNativeBuild {
         ndkBuild {
             path = file("src/main/cpp/Android.mk")
         }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
@@ -27,8 +38,7 @@ dependencies {
     implementation(libs.google.guava)
     implementation(libs.common.hiddenApiBypass)
 
-    // Do not increment version higher than 1.0.0-alpha09 since it will break ViewUtils and needs to be looked into
-    // noinspection GradleDependency
+    // Do not increment version higher than 1.0.0-alpha09 since it will break ViewUtils
     implementation(libs.common.io)
     implementation(libs.common.termuxAmLib)
 
