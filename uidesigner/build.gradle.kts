@@ -6,10 +6,21 @@ plugins {
 
 android {
   namespace = "${BuildConfig.packageName}.uidesigner"
+
+  compileSdk = 35
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
+
+  kotlinOptions {
+    jvmTarget = "17"
+  }
 }
 
 dependencies {
-  
+
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.fragment.ktx)
