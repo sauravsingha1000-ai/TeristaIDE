@@ -9,6 +9,9 @@ pluginManagement {
     google()
     mavenCentral()
   }
+plugins {
+    id("com.mooltiverse.oss.nyx") version "2.5.1"
+}
 }
 
 FDroidConfig.load(rootDir)
