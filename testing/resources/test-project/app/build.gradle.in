@@ -6,7 +6,7 @@ android {
     namespace = "com.itsaky.test.app"
     compileSdkVersion rootProject.ext.compileSdk
     buildToolsVersion rootProject.ext.buildTools
-    
+
     defaultConfig {
         applicationId rootProject.ext.appId
         minSdkVersion rootProject.ext.minSdk
@@ -14,36 +14,36 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
     }
-    
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile ('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    
+
     lintOptions {
         abortOnError false
     }
-    
+
     buildFeatures {
         viewBinding true
     }
 }
 
-task thisIsATestTask () {
+task thisIsATestTask() {
     println "This is a test task"
 }
 
 dependencies {
-    implementation fileTree (dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    
+
     // Issue #488
     implementation 'com.unity3d.ads:unity-ads:4.4.0'
     implementation 'com.google.android.gms:play-services-ads:21.2.0'
@@ -62,12 +62,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-basement:18.1.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display'
     implementation 'com.google.android.material:material:1.8.0-alpha01'
-    
+
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
-    implementation project (path: ':another-android-library')
-    
+    implementation project(path: ':another-android-library')
+
     implementation platform('com.google.firebase:firebase-bom:30.5.0')
 
     @@UNRESOLVED_DEPENDENCY@@
 }
-
