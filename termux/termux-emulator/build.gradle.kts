@@ -7,10 +7,20 @@ android {
     namespace = "com.termux.emulator"
     ndkVersion = BuildConfig.ndkVersion
 
+    compileSdk = 35
+
     defaultConfig {
         externalNativeBuild {
             ndkBuild {
-                cFlags += arrayOf("-std=c11", "-Wall", "-Wextra", "-Werror", "-Os", "-fno-stack-protector", "-Wl,--gc-sections")
+                cFlags += arrayOf(
+                    "-std=c11",
+                    "-Wall",
+                    "-Wextra",
+                    "-Werror",
+                    "-Os",
+                    "-fno-stack-protector",
+                    "-Wl,--gc-sections"
+                )
             }
         }
     }
@@ -24,9 +34,18 @@ android {
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
-tasks.withType(Test::class.java) {
+tasks.withType<Test> {
     testLogging {
         events("started", "passed", "skipped", "failed")
     }
