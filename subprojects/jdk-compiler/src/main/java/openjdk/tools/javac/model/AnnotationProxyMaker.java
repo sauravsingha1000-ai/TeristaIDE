@@ -224,10 +224,10 @@ private static final class MirroredTypeExceptionProxy extends ExceptionProxy {
 private static final class MirroredTypesExceptionProxy extends ExceptionProxy {
     static final long serialVersionUID = 269;
 
-    private transient List<TypeMirror> types;
+    private transient java.util.List<TypeMirror> types;
     private final String typeStrings;
 
-    MirroredTypesExceptionProxy(List<TypeMirror> ts) {
+    MirroredTypesExceptionProxy(java.util.List<TypeMirror> ts) {
         types = ts;
         typeStrings = ts.toString();
     }
