@@ -145,7 +145,7 @@ public class IDEWrapperGenerator {
 
   private static URI getDistributionUri(File uriRoot, String url) {
     try {
-      return url;
+      return URI.create(url);
     } catch (URISyntaxException e) {
       throw new GradleException("Distribution URL String cannot be parsed: " + url, e);
     }
