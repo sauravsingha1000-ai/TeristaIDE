@@ -22,5 +22,5 @@ java {
 dependencies {
   implementation(libs.common.jkotlin)
   implementation(projects.buildInfo)
-  api(libs.tooling.builderModel)
+  api(projects.subprojects.builderModel)
 }
