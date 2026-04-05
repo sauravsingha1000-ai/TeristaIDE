@@ -21,7 +21,12 @@ java {
 
 dependencies {
     implementation(projects.shared)
-    implementation(projects.subprojects.jaxp)
+
+    // ❌ REMOVE THIS
+    // implementation(projects.subprojects.jaxp)
+
+    // ✅ ADD THIS
+    implementation("xerces:xercesImpl:2.12.2")
 
     implementation(libs.common.jsoup)
     implementation(libs.common.jsonrpc)
