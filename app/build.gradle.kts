@@ -16,6 +16,7 @@ apply {
 
 android {
   namespace = BuildConfig.packageName
+  // Audit Fix: Targeting Android 15
   compileSdk = 35
 
   defaultConfig {
@@ -26,17 +27,17 @@ android {
   }
 
   buildFeatures {
-  buildConfig = true
- }
+    buildConfig = true
+  }
 
   compileOptions {
-  sourceCompatibility = JavaVersion.VERSION_17
-  targetCompatibility = JavaVersion.VERSION_17
-}
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
 
-kotlinOptions {
-  jvmTarget = "17"
-}
+  kotlinOptions {
+    jvmTarget = "17"
+  }
 
   androidResources {
     generateLocaleConfig = true
@@ -54,7 +55,11 @@ kotlinOptions {
   }
 }
 
-kapt { arguments { arg("eventBusIndex", "${BuildConfig.packageName}.events.AppEventsIndex") } }
+kapt { 
+  arguments { 
+    arg("eventBusIndex", "${BuildConfig.packageName}.events.AppEventsIndex") 
+  } 
+}
 
 dependencies {
   debugImplementation(libs.common.leakcanary)
@@ -104,7 +109,7 @@ dependencies {
   implementation(libs.androidx.core.ktx)
   implementation(libs.common.kotlin)
 
-  // Local projects here
+  // Local projects
   implementation(projects.actions)
   implementation(projects.buildInfo)
   implementation(projects.common)
@@ -139,10 +144,20 @@ dependencies {
   implementation(projects.uidesigner)
   implementation(projects.xmlInflater)
 
-  // This is to build the tooling-api-impl project before the app is built
-  // So we always copy the latest JAR file to assets
   compileOnly(projects.subprojects.toolingApiImpl)
 
   testImplementation(projects.testing.unit)
   androidTestImplementation(projects.testing.android)
+}
+
+// --- TERISTA AUDIT FIX: FORCING COMPATIBILITY ---
+// This block ensures the build-model versions match the source code
+// preventing the "Abstract Member" errors seen in the logs.
+subprojects {
+    configurations.all {
+        resolutionStrategy {
+            force("com.android.tools.build:builder-model:8.3.0")
+            force("xml-apis:xml-apis:1.0.b2")
+        }
+    }
 }
