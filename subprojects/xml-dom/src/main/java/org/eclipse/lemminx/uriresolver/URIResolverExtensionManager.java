@@ -15,127 +15,134 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import jaxp.sun.org.apache.xerces.internal.impl.XMLEntityManager;
-import jaxp.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier;
-import jaxp.sun.org.apache.xerces.internal.xni.XNIException;
-import jaxp.sun.org.apache.xerces.internal.xni.parser.XMLInputSource;
+import org.apache.xerces.xni.XMLResourceIdentifier;
+import org.apache.xerces.xni.XNIException;
+import org.apache.xerces.xni.parser.XMLInputSource;
 
 /** URI resolver manager. */
 public class URIResolverExtensionManager
-    implements URIResolverExtension, IExternalGrammarLocationProvider {
+implements URIResolverExtension, IExternalGrammarLocationProvider {
 
-  private final List<URIResolverExtension> resolvers;
+private final List<URIResolverExtension> resolvers;
 
-  private final URIResolverExtension defaultURIResolverExtension;
+private final URIResolverExtension defaultURIResolverExtension;
 
-  public URIResolverExtensionManager() {
-    resolvers = new ArrayList<>();
-    this.defaultURIResolverExtension = new DefaultURIResolverExtension();
+public URIResolverExtensionManager() {
+resolvers = new ArrayList<>();
+this.defaultURIResolverExtension = new DefaultURIResolverExtension();
+}
+
+static class DefaultURIResolverExtension implements URIResolverExtension {
+
+@Override
+public String getName() {
+  return URIResolverExtension.DEFAULT;
+}
+
+@Override
+public String resolve(String baseLocation, String publicId, String systemId) {
+  try {
+    if (systemId == null) {
+      return null;
+    }
+    if (baseLocation == null) {
+      return systemId;
+    }
+    URI base = new URI(baseLocation);
+    return base.resolve(systemId).toString();
+  } catch (Exception e) {
+    return systemId;
+  }
+}
+
+@Override
+public XMLInputSource resolveEntity(XMLResourceIdentifier rid)
+    throws XNIException, IOException {
+
+  String id = rid.getPublicId();
+  if (id == null) {
+    id = rid.getNamespace();
   }
 
-  static class DefaultURIResolverExtension implements URIResolverExtension {
-
-    @Override
-    public String getName() {
-      return URIResolverExtension.DEFAULT;
-    }
-
-    @Override
-    public String resolve(String baseLocation, String publicId, String systemId) {
-      try {
-        return XMLEntityManager.expandSystemId(systemId, baseLocation, false);
-      } catch (jaxp.sun.org.apache.xerces.internal.util.URI.MalformedURIException e) {
-        return systemId;
-      }
-    }
-
-    @Override
-    public XMLInputSource resolveEntity(XMLResourceIdentifier rid)
-        throws XNIException, IOException {
-      XMLInputSource is = null;
-      String id = rid.getPublicId();
-      if (id == null) {
-        id = rid.getNamespace();
-      }
-      String location = null;
-      if (id != null || rid.getLiteralSystemId() != null) {
-        location = this.resolve(rid.getBaseSystemId(), id, rid.getLiteralSystemId());
-      }
-
-      if (location != null) {
-        is = new XMLInputSource(rid.getPublicId(), location, location);
-      }
-      return is;
-    }
+  String location = null;
+  if (id != null || rid.getLiteralSystemId() != null) {
+    location = this.resolve(rid.getBaseSystemId(), id, rid.getLiteralSystemId());
   }
 
-  /**
-   * Register an URI resolver.
-   *
-   * @param resolver the URI resolver to register.
-   */
-  public void registerResolver(URIResolverExtension resolver) {
-    resolvers.add(resolver);
+  if (location != null) {
+    return new XMLInputSource(rid.getPublicId(), location, location);
   }
 
-  /**
-   * Unregister an URI resolver.
-   *
-   * @param resolver the URI resolver to unregister.
-   */
-  public void unregisterResolver(URIResolverExtension resolver) {
-    resolvers.add(resolver);
-  }
+  return null;
+}
 
-  @Override
-  public String resolve(String baseLocation, String publicId, String systemId) {
-    for (URIResolverExtension resolver : resolvers) {
-      String resolved = resolver.resolve(baseLocation, publicId, systemId);
-      if (resolved != null && !resolved.isEmpty()) {
-        return resolved;
-      }
-    }
-    return defaultURIResolverExtension.resolve(baseLocation, publicId, systemId);
-  }
+}
 
-  public ResolvedURIInfo resolveInfo(String baseLocation, String publicId, String systemId) {
-    for (URIResolverExtension resolver : resolvers) {
-      String resolvedURI = resolver.resolve(baseLocation, publicId, systemId);
-      if (resolvedURI != null && !resolvedURI.isEmpty()) {
-        return new ResolvedURIInfo(resolvedURI, resolver);
-      }
-    }
-    String resolvedURI = defaultURIResolverExtension.resolve(baseLocation, publicId, systemId);
-    if (resolvedURI != null && !resolvedURI.isEmpty()) {
-      return new ResolvedURIInfo(resolvedURI, defaultURIResolverExtension);
-    }
-    return null;
-  }
+public void registerResolver(URIResolverExtension resolver) {
+resolvers.add(resolver);
+}
 
-  @Override
-  public XMLInputSource resolveEntity(XMLResourceIdentifier resourceIdentifier)
-      throws XNIException, IOException {
-    XMLInputSource is = null;
-    for (URIResolverExtension resolver : resolvers) {
-      is = resolver.resolveEntity(resourceIdentifier);
-      if (is != null) {
-        return is;
-      }
-    }
-    return defaultURIResolverExtension.resolveEntity(resourceIdentifier);
-  }
+public void unregisterResolver(URIResolverExtension resolver) {
+resolvers.remove(resolver); // ✅ FIXED BUG
+}
 
-  @Override
-  public Map<String, String> getExternalGrammarLocation(URI fileURI) {
-    for (URIResolverExtension resolver : resolvers) {
-      if (resolver instanceof IExternalGrammarLocationProvider) {
-        Map<String, String> result =
-            ((IExternalGrammarLocationProvider) resolver).getExternalGrammarLocation(fileURI);
-        if (result != null) {
-          return result;
-        }
-      }
-    }
-    return null;
+@Override
+public String resolve(String baseLocation, String publicId, String systemId) {
+for (URIResolverExtension resolver : resolvers) {
+String resolved = resolver.resolve(baseLocation, publicId, systemId);
+if (resolved != null && !resolved.isEmpty()) {
+return resolved;
+}
+}
+return defaultURIResolverExtension.resolve(baseLocation, publicId, systemId);
+}
+
+public ResolvedURIInfo resolveInfo(String baseLocation, String publicId, String systemId) {
+for (URIResolverExtension resolver : resolvers) {
+String resolvedURI = resolver.resolve(baseLocation, publicId, systemId);
+if (resolvedURI != null && !resolvedURI.isEmpty()) {
+return new ResolvedURIInfo(resolvedURI, resolver);
+}
+}
+
+String resolvedURI = defaultURIResolverExtension.resolve(baseLocation, publicId, systemId);
+if (resolvedURI != null && !resolvedURI.isEmpty()) {
+  return new ResolvedURIInfo(resolvedURI, defaultURIResolverExtension);
+}
+
+return null;
+
+}
+
+@Override
+public XMLInputSource resolveEntity(XMLResourceIdentifier resourceIdentifier)
+throws XNIException, IOException {
+
+for (URIResolverExtension resolver : resolvers) {
+  XMLInputSource is = resolver.resolveEntity(resourceIdentifier);
+  if (is != null) {
+    return is;
   }
+}
+
+return defaultURIResolverExtension.resolveEntity(resourceIdentifier);
+
+}
+
+@Override
+public Map<String, String> getExternalGrammarLocation(URI fileURI) {
+for (URIResolverExtension resolver : resolvers) {
+if (resolver instanceof IExternalGrammarLocationProvider) {
+Map<String, String> result =
+((IExternalGrammarLocationProvider) resolver)
+.getExternalGrammarLocation(fileURI);
+
+    if (result != null) {
+      return result;
+    }
+  }
+}
+return null;
+
+}
 }
