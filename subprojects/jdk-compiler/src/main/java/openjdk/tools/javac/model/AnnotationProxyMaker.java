@@ -26,16 +26,16 @@ package openjdk.tools.javac.model;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.lang.annotation.;
-import java.lang.reflect.;
+import java.lang.annotation.*;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import jdkx.lang.model.type.;
-import openjdk.tools.javac.code.;
-import openjdk.tools.javac.code.Symbol.;
+import jdkx.lang.model.type.*;
+import openjdk.tools.javac.code.*;
+import openjdk.tools.javac.code.Symbol.*;
 import openjdk.tools.javac.code.Type.ArrayType;
-import openjdk.tools.javac.util.;
+import openjdk.tools.javac.util.*;
 
 import static openjdk.tools.javac.code.Scope.LookupKind.NON_RECURSIVE;
 import static openjdk.tools.javac.code.Kinds.Kind.*;
