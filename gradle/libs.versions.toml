@@ -1,9 +1,9 @@
 [versions]
-agp = "8.5.2"
-agp-tooling = "8.5.2"
+agp = "8.2.2"
+agp-tooling = "8.2.2"
 gradle-tooling = "8.5-r4"
 junit-jupiter = "5.10.1"
-kotlin = "1.9.24"
+kotlin = "1.9.10"
 kotlin-coroutines = "1.7.3"
 tree-sitter = "4.0.1-internal.1+branch.dev.commit.e09c012.timestamp.20231125133123-SNAPSHOT"
 editor = "0.22.2"
