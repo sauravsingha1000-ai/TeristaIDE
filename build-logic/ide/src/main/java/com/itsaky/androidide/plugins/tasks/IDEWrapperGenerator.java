@@ -37,7 +37,6 @@ import com.itsaky.androidide.plugins.tasks.internal.WrapperDefaults;
 import com.itsaky.androidide.plugins.tasks.internal.WrapperGenerator;
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -144,11 +143,7 @@ public class IDEWrapperGenerator {
   }
 
   private static URI getDistributionUri(File uriRoot, String url) {
-    try {
-      return URI.create(url);
-    } catch (URISyntaxException e) {
-      throw new GradleException("Distribution URL String cannot be parsed: " + url, e);
-    }
+    return URI.create(url);
   }
 
   private String getDistributionSha256Sum(Properties existingProperties) {
